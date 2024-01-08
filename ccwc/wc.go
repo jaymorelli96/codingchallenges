@@ -4,12 +4,14 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"unicode/utf8"
 )
 
 type options struct {
 	c bool
 	l bool
 	w bool
+	m bool
 }
 
 func WordCount(r io.Reader, w io.Writer, opts options) error {
@@ -43,6 +45,11 @@ func WordCount(r io.Reader, w io.Writer, opts options) error {
 	if opts.w {
 		f := bytes.Fields(b)
 		err = write(w, len(f))
+	}
+
+	if opts.m {
+		n := utf8.RuneCount(b)
+		err = write(w, n)
 	}
 
 	return err
