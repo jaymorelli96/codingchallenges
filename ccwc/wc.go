@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 )
@@ -8,6 +9,7 @@ import (
 type options struct {
 	c bool
 	l bool
+	w bool
 }
 
 func WordCount(r io.Reader, w io.Writer, opts options) error {
@@ -20,6 +22,8 @@ func WordCount(r io.Reader, w io.Writer, opts options) error {
 
 		return write(w, 0)
 	}
+
+	b = b[:n]
 
 	if opts.c {
 		err = write(w, n)
@@ -34,6 +38,11 @@ func WordCount(r io.Reader, w io.Writer, opts options) error {
 		}
 
 		err = write(w, count)
+	}
+
+	if opts.w {
+		f := bytes.Fields(b)
+		err = write(w, len(f))
 	}
 
 	return err
