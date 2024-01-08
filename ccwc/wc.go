@@ -7,6 +7,7 @@ import (
 
 type options struct {
 	c bool
+	l bool
 }
 
 func WordCount(r io.Reader, w io.Writer, opts options) error {
@@ -17,17 +18,28 @@ func WordCount(r io.Reader, w io.Writer, opts options) error {
 			return err
 		}
 
-		return writeBytes(w, 0)
+		return write(w, 0)
 	}
 
 	if opts.c {
-		err = writeBytes(w, n)
+		err = write(w, n)
+	}
+
+	if opts.l {
+		count := 1
+		for _, v := range b {
+			if v == '\n' {
+				count++
+			}
+		}
+
+		err = write(w, count)
 	}
 
 	return err
 }
 
-func writeBytes(w io.Writer, n int) error {
+func write(w io.Writer, n int) error {
 	_, err := fmt.Fprint(w, n)
 	return err
 }
