@@ -11,6 +11,7 @@ func TestWordCountNumberOfBytes(t *testing.T) {
 		"file1": {Data: []byte("abc")},
 		"file2": {Data: []byte("")},
 		"file3": {Data: []byte("joão")},
+		"file4": {Data: []byte("abc\ndef")},
 	}
 
 	type test struct {
@@ -19,9 +20,10 @@ func TestWordCountNumberOfBytes(t *testing.T) {
 	}
 
 	tt := []test{
-		{"file1", "3"},
-		{"file2", "0"},
-		{"file3", "5"},
+		{"file1", "3 "},
+		{"file2", "0 "},
+		{"file3", "5 "},
+		{"file4", "7 "},
 	}
 
 	for _, tc := range tt {
@@ -60,10 +62,10 @@ func TestWordCountNumberOfLines(t *testing.T) {
 	}
 
 	tt := []test{
-		{"file1", "2"},
-		{"file2", "0"},
-		{"file3", "1"},
-		{"file4", "3"},
+		{"file1", "2 "},
+		{"file2", "0 "},
+		{"file3", "1 "},
+		{"file4", "3 "},
 	}
 
 	for _, tc := range tt {
@@ -102,11 +104,11 @@ func TestWordCountNumberOfWords(t *testing.T) {
 	}
 
 	tt := []test{
-		{"file1", "2"},
-		{"file2", "0"},
-		{"file3", "1"},
-		{"file4", "5"},
-		{"file5", "2"},
+		{"file1", "2 "},
+		{"file2", "0 "},
+		{"file3", "1 "},
+		{"file4", "5 "},
+		{"file5", "2 "},
 	}
 
 	for _, tc := range tt {
@@ -146,12 +148,12 @@ func TestWordCountNumberOfChars(t *testing.T) {
 	}
 
 	tt := []test{
-		{"file1", "8"},
-		{"file2", "1"},
-		{"file3", "8"},
-		{"file4", "5"},
-		{"file5", "8"},
-		{"file6", "0"},
+		{"file1", "8 "},
+		{"file2", "1 "},
+		{"file3", "8 "},
+		{"file4", "5 "},
+		{"file5", "8 "},
+		{"file6", "0 "},
 	}
 
 	for _, tc := range tt {
@@ -162,6 +164,56 @@ func TestWordCountNumberOfChars(t *testing.T) {
 		defer file.Close()
 
 		opts := options{m: true}
+		var b bytes.Buffer
+
+		err = WordCount(file, &b, opts)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		if b.String() != tc.want {
+			t.Errorf("file: %s - got %s; want %s", file, b.String(), tc.want)
+		}
+	}
+}
+
+func TestWordCountDefault(t *testing.T) {
+	files := fstest.MapFS{
+		"file1": {Data: []byte("abc\ndef\n")},
+		"file2": {Data: []byte("\n")},
+		"file3": {Data: []byte("bigword\n")},
+		"file4": {Data: []byte("joão\n")},
+		"file5": {Data: []byte("abc def\n")},
+		"file6": {Data: []byte("")},
+	}
+
+	type test struct {
+		file string
+		want string
+	}
+
+	tt := []test{
+		{"file1", "8 3 2 "},
+		{"file2", "1 2 0 "},
+		{"file3", "8 2 1 "},
+		{"file4", "6 2 1 "},
+		{"file5", "8 2 2 "},
+		{"file6", "0 0 0 "},
+	}
+
+	for _, tc := range tt {
+		file, err := files.Open(tc.file)
+		if err != nil {
+			t.Fatal(err)
+		}
+		defer file.Close()
+
+		opts := options{
+			c: true,
+			l: true,
+			w: true,
+		}
+
 		var b bytes.Buffer
 
 		err = WordCount(file, &b, opts)

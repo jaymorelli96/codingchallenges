@@ -22,13 +22,25 @@ func WordCount(r io.Reader, w io.Writer, opts options) error {
 			return err
 		}
 
-		return write(w, 0)
+		if opts.c {
+			fmt.Fprintf(w, "0 ")
+		}
+		if opts.l {
+			fmt.Fprintf(w, "0 ")
+		}
+		if opts.w {
+			fmt.Fprintf(w, "0 ")
+		}
+		if opts.m {
+			fmt.Fprintf(w, "0 ")
+		}
+		return nil
 	}
 
 	b = b[:n]
 
 	if opts.c {
-		err = write(w, n)
+		fmt.Fprintf(w, "%d ", len(b))
 	}
 
 	if opts.l {
@@ -39,23 +51,18 @@ func WordCount(r io.Reader, w io.Writer, opts options) error {
 			}
 		}
 
-		err = write(w, count)
+		fmt.Fprintf(w, "%d ", count)
 	}
 
 	if opts.w {
 		f := bytes.Fields(b)
-		err = write(w, len(f))
+		fmt.Fprintf(w, "%d ", len(f))
 	}
 
 	if opts.m {
 		n := utf8.RuneCount(b)
-		err = write(w, n)
+		fmt.Fprintf(w, "%d ", n)
 	}
 
-	return err
-}
-
-func write(w io.Writer, n int) error {
-	_, err := fmt.Fprint(w, n)
 	return err
 }
