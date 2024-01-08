@@ -1,7 +1,7 @@
 package main
 
 import (
-	"io"
+	"bytes"
 	"testing"
 	"testing/fstest"
 )
@@ -15,13 +15,13 @@ func TestWordCountNumberOfBytes(t *testing.T) {
 
 	type test struct {
 		file string
-		want int
+		want string
 	}
 
 	tt := []test{
-		{"file1", 3},
-		{"file2", 0},
-		{"file3", 5},
+		{"file1", "3"},
+		{"file2", "0"},
+		{"file3", "5"},
 	}
 
 	for _, tc := range tt {
@@ -33,14 +33,15 @@ func TestWordCountNumberOfBytes(t *testing.T) {
 
 		opts := options{c: true}
 
-		got, err := WordCount(file, io.Discard, opts)
+		var b bytes.Buffer
+
+		err = WordCount(file, &b, opts)
 		if err != nil {
 			t.Fatal(err)
 		}
 
-		if got != tc.want {
-			t.Errorf("got %d; want %d", got, tc.want)
+		if b.String() != tc.want {
+			t.Errorf("got %s; want %s", b.String(), tc.want)
 		}
 	}
 }
-

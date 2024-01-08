@@ -9,21 +9,22 @@ type options struct {
 	c bool
 }
 
-func WordCount(r io.Reader, w io.Writer, opts options) (int, error) {
+func WordCount(r io.Reader, w io.Writer, opts options) error {
 	b := make([]byte, 1024)
 	n, err := r.Read(b)
 	if err != nil {
 		if err != io.EOF {
-			return 0, err
+			return err
 		}
-		return 0, nil
+
+		return writeBytes(w, 0)
 	}
 
 	if opts.c {
 		err = writeBytes(w, n)
 	}
 
-	return n, err
+	return err
 }
 
 func writeBytes(w io.Writer, n int) error {
