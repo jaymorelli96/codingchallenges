@@ -15,42 +15,22 @@ type options struct {
 }
 
 func WordCount(r io.Reader, w io.Writer, opts options) error {
-	b := make([]byte, 1024)
-	n, err := r.Read(b)
+	var buf bytes.Buffer
+	_, err := io.Copy(&buf, r)
 	if err != nil {
 		if err != io.EOF {
 			return err
 		}
 
-		if opts.c {
-			fmt.Fprintf(w, "0 ")
-		}
-		if opts.l {
-			fmt.Fprintf(w, "0 ")
-		}
-		if opts.w {
-			fmt.Fprintf(w, "0 ")
-		}
-		if opts.m {
-			fmt.Fprintf(w, "0 ")
-		}
+		handleEmptyFile(w, opts)
+
 		return nil
 	}
 
-	b = b[:n]
-
-	if opts.c {
-		fmt.Fprintf(w, "%d ", len(b))
-	}
+	b := buf.Bytes()
 
 	if opts.l {
-		count := 1
-		for _, v := range b {
-			if v == '\n' {
-				count++
-			}
-		}
-
+		count := bytes.Count(b, []byte{'\n'})
 		fmt.Fprintf(w, "%d ", count)
 	}
 
@@ -59,10 +39,29 @@ func WordCount(r io.Reader, w io.Writer, opts options) error {
 		fmt.Fprintf(w, "%d ", len(f))
 	}
 
+	if opts.c {
+		fmt.Fprintf(w, "%d ", len(b))
+	}
+
 	if opts.m {
 		n := utf8.RuneCount(b)
 		fmt.Fprintf(w, "%d ", n)
 	}
 
 	return err
+}
+
+func handleEmptyFile(w io.Writer, opts options) {
+	if opts.c {
+		fmt.Fprintf(w, "0 ")
+	}
+	if opts.l {
+		fmt.Fprintf(w, "0 ")
+	}
+	if opts.w {
+		fmt.Fprintf(w, "0 ")
+	}
+	if opts.m {
+		fmt.Fprintf(w, "0 ")
+	}
 }

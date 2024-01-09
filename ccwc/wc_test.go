@@ -62,10 +62,10 @@ func TestWordCountNumberOfLines(t *testing.T) {
 	}
 
 	tt := []test{
-		{"file1", "2 "},
+		{"file1", "1 "},
 		{"file2", "0 "},
-		{"file3", "1 "},
-		{"file4", "3 "},
+		{"file3", "0 "},
+		{"file4", "2 "},
 	}
 
 	for _, tc := range tt {
@@ -185,6 +185,7 @@ func TestWordCountDefault(t *testing.T) {
 		"file4": {Data: []byte("joão\n")},
 		"file5": {Data: []byte("abc def\n")},
 		"file6": {Data: []byte("")},
+		"file7": {Data: []byte("abc def")},
 	}
 
 	type test struct {
@@ -193,12 +194,13 @@ func TestWordCountDefault(t *testing.T) {
 	}
 
 	tt := []test{
-		{"file1", "8 3 2 "},
-		{"file2", "1 2 0 "},
-		{"file3", "8 2 1 "},
-		{"file4", "6 2 1 "},
-		{"file5", "8 2 2 "},
+		{"file1", "2 2 8 "},
+		{"file2", "1 0 1 "},
+		{"file3", "1 1 8 "},
+		{"file4", "1 1 6 "},
+		{"file5", "1 2 8 "},
 		{"file6", "0 0 0 "},
+		{"file7", "0 2 7 "},
 	}
 
 	for _, tc := range tt {
