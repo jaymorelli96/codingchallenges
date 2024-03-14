@@ -1,0 +1,57 @@
+# Coding Challenges
+You can find my posts where I write about my thought process while developing this challenges and practicing TDD in my [blog](https://www.jaymorelli.me/blog)
+
+The original list can be found in [Coding Challenges](https://codingchallenges.fyi/challenges/intro). Thank you John for what you have created.
+- [x] ccwc tool
+- [ ] json parser
+- [ ] compression tool
+- [ ] cut tool
+- [ ] loadbalancer
+- [ ] sort tool
+- [ ] calculator
+- [ ] redis server
+- [ ] grep
+- [ ] uniq tool
+- [ ] web server
+- [ ] url shortener
+- [ ] diff tool
+- [ ] shell
+- [ ] cat tool
+- [ ] irc client
+- [ ] memcached server
+- [ ] spotify client
+- [ ] discord bot
+- [ ] linkedin carousel generator
+- [ ] sed
+- [ ] dns resolver
+- [ ] traceroute
+- [ ] realtime chat client and server
+- [ ] nats message broker
+- [ ] git
+- [ ] rate limiter
+- [ ] ntp client
+- [ ] scheduling and automation app
+- [ ] lisp interpreter
+- [ ] qr code generator
+- [ ] crontab tool
+- [ ] head
+- [ ] jq
+- [ ] google keep
+- [ ] pong
+- [ ] redis cli tool
+- [ ] network modelling tool
+- [ ] social media tool
+- [ ] curl
+- [ ] http(s) load tester
+- [ ] tr tool
+- [ ] tetris
+- [ ] dns forwarder
+- [ ] port scaner
+- [ ] yq
+- [ ] chrome extension
+- [ ] data privacy vault
+- [ ] password cracker
+- [ ] xargs
+- [ ] http forward proxy server
+- [ ] docker
+
